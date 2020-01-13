@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" href="../img/favicon.ico" />
+  <title>Distribution generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+.menu {
+  float:left;
+  width:20%;
+  text-align:center;
+}
+.menu a {
+  background-color:#e5e5e5;
+  padding:8px;
+  margin-top:7px;
+  display:block;
+  width:100%;
+  color:black;
+}
+.main {
+  float:left;
+  width:60%;
+  padding:0 20px;
+}
+.right {
+  background-color:#e5e5e5;
+  float:left;
+  width:20%;
+  padding:15px;
+  margin-top:7px;
+  text-align:center;
+}
+
+@media only screen and (max-width:620px) {
+  /* For mobile phones: */
+  .menu, .main, .right {
+    width:100%;
+  }
+}
+</style>
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+<div style="background-color:#e5e5e5;padding:15px;text-align:center;">
+  <h1>DAMT Programming Project</h1>
+</div>
+
+<div style="overflow:auto">
+  <div class="menu">
+    <a href="/distribution/bernoulli">bernoulli</a>
+    <a href="/distribution/binomial">binomial</a>
+    <a href="/distribution/geometric">geometric</a>
+    <a href="/distribution/neg-binomial">neg-binomial</a>
+    <a href="/distribution/poisson">poisson</a>
+    <a href="/distribution/arb-discrete">arb-discrete</a>
+    <a href="/distribution/uniform">uniform</a>
+    <a href="/distribution/exponential">exponential</a>
+    <a href="/distribution/gamma">gamma</a>
+    <a href="/distribution/normal">normal</a>
+</div>
+<div class="main">
+  <h2>Please enter the parameters of the</h2>
+  <h1>{{ dist_type }} distribution</h1>
+    <form action="/distribution/samples/{{ dist_type }}" method="post" id="get-samples">
+	{% csrf_token %}
+		<p>
+			Number of samples: <input name="no_of_samples" type="number" required>
+		</p>
+	{% if dist_type == "bernoulli" %}
+        <p>
+            Probability parameter: <input name="p_param" type="text">
+        </p>
+	{% elif dist_type == "binomial" %}
+		<p>
+            Number of success in n trials parameter: <input name="n_param" type="number">
+        </p>
+		<p>
+            Probability parameter: <input name="p_param" type="text">
+        </p>
+	{% elif dist_type == "geometric" %}
+		<p>
+            Probability parameter: <input name="p_param" type="text">
+        </p>
+	{% elif dist_type == "neg-binomial" %}
+		<p>
+            Number of Trials untill <b>k</b> success parameter: <input name="k_param" type="number">
+        </p>
+		<p>
+            Probability parameter: <input name="p_param" type="text">
+        </p>
+	{% elif dist_type == "poisson" %}
+		<p>
+            lambda parameter: <input name="lambda_param" type="text">
+        </p>
+	{% elif dist_type == "arb-discrete" %}
+		<p>
+            arb-discrete probability distribution parameter: <input name="arb_p_param" type="text">
+        </p>
+		<p>
+		<h4><b>IMP NOTE:</b></h4> For correct response enter comma seperated values of probaility distribution, the values should add up to 1. 
+		</p>
+		<p>e.g: 0.1,0.2,0.7</p>
+	{% elif dist_type == "uniform" %}
+		<p>
+            lower range <b>a</b> parameter: <input name="a_param" type="text">
+        </p>
+		<p>
+            upper range <b>b</b> parameter: <input name="b_param" type="text">
+        </p>
+	{% elif dist_type == "exponential" %}
+		<p>
+            lambda parameter: <input name="lambda_param" type="text">
+        </p>
+	{% elif dist_type == "gamma" %}
+		<p>
+            alpha parameter: <input name="a_param" type="text">
+        </p>
+		<p>
+            lambda parameter: <input name="lambda_param" type="text">
+        </p>
+	{% elif dist_type == "normal" %}
+		<p>
+            mu parameter: <input name="mu_param" type="text">
+        </p>
+		<p>
+            sigma parameter: <input name="s_param" type="text">
+        </p>
+	{% endif %}
+	<p><input type="submit" value = "Get Samples"></p>
+    </form>
+  </div>
+
+<div class="right">
+  <h2>About</h2>
+  {% if dist_type == "bernoulli" %}
+        <p>
+            Used to model experiments with a binary outcome (yes or no,pass or fail,true or false)
+        </p>
+	{% elif dist_type == "binomial" %}
+		<p>
+            It is used to model number of success in a sequence of independent Bernoulli trials. Models the probability of x successes in n trials.
+        </p>
+	{% elif dist_type == "geometric" %}
+		<p>
+            It is used to model number of trials needed to achieve the first success in a sequence of independent Bernoulli trials. Models the probabilty of x<sup>th</sup> successive trial resulting in a success. 
+        </p>
+	{% elif dist_type == "neg-binomial" %}
+		<p>
+            It is used to model number of trials needed to obtain k success in a sequence of independent Bernoulli trials. Models the probability of x<sup>th</sup> successive trial resulting in the k<sup>th</sup> success. 
+        </p>
+	{% elif dist_type == "poisson" %}
+		<p>
+            It is used to model number of rare events occurring within a fixed period of time. Models the probability of x rare events occurring in a fixed period of time if we know the frequency at which the events occur on average.
+        </p>
+	{% elif dist_type == "arb-discrete" %}
+		<p>
+            samples for any arbitrary discrete distribution. 
+        </p>
+	{% elif dist_type == "exponential" %}
+		<p>
+            Used to model time (or seperation) between events occuring at frequency lambda(rate at which the events occur).
+        </p>
+	{% elif dist_type == "gamma" %}
+		<p>
+            Used to model total time of multistage processes with alpha steps (shape parameter) where time of each step can be modeled as an Exponential distribution with frequency lambda.
+        </p>
+	{% elif dist_type == "normal" %}
+		<p>
+            Used to model a large number of scenarios, due to central limit theorem(C.L.T) a large number of samples of any distribution tend to behave like normal distribution.
+        </p>
+	{% endif %}
+</div>
+</div>
+</div>
+
+<div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">© copyright Varun kumar pande</div>
+
+</body>
+</html>
