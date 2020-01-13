@@ -25,7 +25,7 @@ SECRET_KEY = os.environ['SECRET_KEY'] or '5x!=w#v$u=g+&ba#qcsp*@!n@f=-@^bbuo4g_s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sample-generator.herokuapp.com','127.0.0.1']
 
 
 # Application definition
