@@ -15,7 +15,7 @@ def samplesGen(request,distribution_type):
     elif distribution_type == 'poisson':
         params = list([request.POST.get('lambda_param')])
     elif distribution_type == 'arb-discrete':
-        params = list([request.POST.get('arb_p_param')])
+        params = request.POST.get('arb_p_param').split(',')
     elif distribution_type == 'uniform':
         params = list([request.POST.get('a_param'),request.POST.get('b_param')])
     elif distribution_type == 'exponential':
